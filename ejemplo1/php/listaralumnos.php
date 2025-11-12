@@ -4,6 +4,7 @@ header("Content-Type: application/json; charset=utf-8");
 
 include_once "conexion.php";
 
+
 $sql = "SELECT * FROM alumnos";
 $resultado = mysqli_query($conexion, $sql);
 
