@@ -15,7 +15,6 @@ if ($resultado && $resultado->num_rows > 0) {
         $alumnos[] = $fila;
     }
     echo json_encode($alumnos);
-} 
-
+}
 
 mysqli_close($conexion);

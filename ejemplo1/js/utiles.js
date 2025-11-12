@@ -1,33 +1,37 @@
 function obtenerAlumnos() {
-    fetch("http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=instituto&table=alumnos")
+    fetch("php/listaralumnos.php")
         .then(response => response.json())
-                .then(data => {
+        .then(data => {
             alumnos = data;
-            mostrarAlumnos();
+
+            const tabla = document.getElementById("tabla-alumnos");
+            const tbody = tabla.querySelector("tbody");
+            const cargando = document.getElementById("cargando");
+
+            if (alumnos.length > 0) {
+                alumnos.forEach(alumno => {
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = `
+                    <td>${alumno.codigo}</td>
+                    <td>${alumno.nombre}</td>
+                    <td>${alumno.apellidos}</td>
+                    <td>${alumno.nota}</td>
+                `;
+                    tbody.appendChild(fila);
+                });
+                cargando.style.display = "none";
+                tabla.style.display = "table";
+            } else {
+                cargando.textContent = "No hay registros de alumnos.";
+            }
         });
 }
 
-function mostrarAlumnos() {
-    let contenedor = document.getElementById("alumnos");
-    contenedor.innerHTML = "";
-
-    alumnos.forEach(alumno => {
-        let table = document.createElement("table");
-        table.className = "tabla-alumnos";
-        let tr = document.createElement("tr");
-        let td = document.createElement("td");
-        td.innerHTML = alumno.id;
-        tr.appendChild(td);
-        td.innerHTML = alumno.nombre;
-        tr.appendChild(td);
-        td = document.createElement("td");
-        td.innerHTML = alumno.apellidos;
-        tr.appendChild(td);
-        td = document.createElement("td");
-        td.innerHTML = alumno.nota;
-        tr.appendChild(td);
-        table.appendChild(tr);
-        contenedor.appendChild(table);
-    });
+function cargalista() {
+    fetch("php/listaralumnosfacil.php")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("lista-alumnos").innerHTML = data;
+        });
 }
 
